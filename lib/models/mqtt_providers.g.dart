@@ -6,7 +6,7 @@ part of 'mqtt_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mqttMessagesHash() => r'47b4140dfcc8dbbe7845ee3b5811cc0297e17017';
+String _$mqttMessagesHash() => r'9bdb3e3ffad3db4f74aff5926fdceaa128aae9b5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$MqttMessages extends BuildlessNotifier<dynamic> {
+abstract class _$MqttMessages extends BuildlessAutoDisposeNotifier<dynamic> {
   late final dynamic topic;
 
   dynamic build(
@@ -80,7 +80,8 @@ class MqttMessagesFamily extends Family<dynamic> {
 }
 
 /// See also [MqttMessages].
-class MqttMessagesProvider extends NotifierProviderImpl<MqttMessages, dynamic> {
+class MqttMessagesProvider
+    extends AutoDisposeNotifierProviderImpl<MqttMessages, dynamic> {
   /// See also [MqttMessages].
   MqttMessagesProvider(
     this.topic,
@@ -122,7 +123,24 @@ class MqttMessagesProvider extends NotifierProviderImpl<MqttMessages, dynamic> {
   }
 }
 
-String _$mqttClientHash() => r'719e6f480a28d4d38fc11e53df5b2755c83074f7';
+String _$mqttClientConnectionStateHash() =>
+    r'da8a38f860098e327c2c983b845daf13e9b8ade7';
+
+/// See also [MqttClientConnectionState].
+@ProviderFor(MqttClientConnectionState)
+final mqttClientConnectionStateProvider =
+    NotifierProvider<MqttClientConnectionState, MqttConnectionState>.internal(
+  MqttClientConnectionState.new,
+  name: r'mqttClientConnectionStateProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$mqttClientConnectionStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$MqttClientConnectionState = Notifier<MqttConnectionState>;
+String _$mqttClientHash() => r'b388b0b5018e939857e1d2bc929a072ab12eb1b6';
 
 /// See also [MqttClient].
 @ProviderFor(MqttClient)

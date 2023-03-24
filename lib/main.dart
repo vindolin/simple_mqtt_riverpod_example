@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mqtt_client/mqtt_client.dart';
 
 import '/models/mqtt_providers.dart';
 
@@ -25,6 +26,7 @@ class _MqttDemoState extends ConsumerState<MqttDemo> {
 
   @override
   void didChangeDependencies() {
+    /// connect to the MQTT server
     ref.watch(mqttClientProvider.notifier).connect();
     super.didChangeDependencies();
   }
@@ -45,6 +47,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final echo = ref.watch(mqttMessagesProvider('echo'));
+    final connectionState = ref.watch(mqttClientConnectionStateProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('MQTT with Riverpod'),
@@ -55,18 +58,24 @@ class HomePage extends ConsumerWidget {
           child: Column(
             children: [
               TextField(
+                // if you enter 0 or 1 and press return, this will display a switch, otherwise it shows the echo text.
                 decoration: const InputDecoration(
-                  hintText:
-                      'Enter a message', // if you enter 0 or 1 this will display a switch, otherwise it shows the echo text.
+                  hintText: 'Enter a message',
                 ),
                 onSubmitted: (value) {
-                  ref.watch(mqttClientProvider.notifier).publish('echo', value);
+                  if (connectionState == MqttConnectionState.connected) {
+                    ref.watch(mqttClientProvider.notifier).publish('echo', value);
+                  }
                 },
               ),
               echo.runtimeType == int ? Switch(value: echo == 1, onChanged: (_) {}) : Text('Echo: $echo'),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text('Connection state: $connectionState'),
       ),
     );
   }
