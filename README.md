@@ -1,4 +1,4 @@
-# mqtt_riverpod
+# simple_mqtt_riverpod_example
 
 Simple Flutter/Riverpod/MQTT example project.
 
